@@ -4,11 +4,15 @@ import com.seanboose.dlat.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -136,7 +140,17 @@ public class FullscreenActivity extends Activity {
             if (AUTO_HIDE) {
                 delayedHide(AUTO_HIDE_DELAY_MILLIS);
             }
+            Log.v("FullscreenActivity", "WOO CLICKY CLICK");
+
+//            Intent getOpenGLIntent = new Intent(this, OpenGLES20Activity.class);
+            Intent getOpenGLIntent = new Intent(getApplicationContext(), OpenGLES20Activity.class);
+//            getGameScreenIntent.putExtra("name", name);
+
+            final int result = 1;
+            startActivityForResult(getOpenGLIntent, result);
+
             return false;
+
         }
     };
 
