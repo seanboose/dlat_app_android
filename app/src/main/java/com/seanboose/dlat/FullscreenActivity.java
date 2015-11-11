@@ -140,9 +140,8 @@ public class FullscreenActivity extends Activity {
             if (AUTO_HIDE) {
                 delayedHide(AUTO_HIDE_DELAY_MILLIS);
             }
-            Log.v("FullscreenActivity", "WOO CLICKY CLICK");
+            Log.v("FullscreenActivity", "Starting OpenGL activity");
 
-//            Intent getOpenGLIntent = new Intent(this, OpenGLES20Activity.class);
             Intent getOpenGLIntent = new Intent(getApplicationContext(), OpenGLES20Activity.class);
 //            getGameScreenIntent.putExtra("name", name);
 
