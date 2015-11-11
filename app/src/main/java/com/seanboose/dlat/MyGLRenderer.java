@@ -32,44 +32,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         float[] scratch = new float[16];
 
-        // Redraw background color
-        mBGR = mBGR + 0.01f*mBGRDirection;
-        mBGG = mBGG + 0.01f*mBGGDirection;
-        mBGB = mBGB + 0.01f*mBGBDirection;
-
-        // Red scale control
-        if(mBGR >= .99f && mBGRDirection > 0.0f){
-            mBGRDirection = -1.0f;
-            mBGR = 1.0f;
-        }
-        else if(mBGR <= .01f && mBGRDirection < 0.0f){
-            mBGRDirection = 1.0f;
-            mBGR = 0.0f;
-        }
-
-        // Green scale control
-        if(mBGG >= .99f && mBGGDirection > 0.0f){
-            mBGGDirection = -2.0f;
-            mBGG = 1.0f;
-        }
-        else if(mBGG <= .01f && mBGGDirection < 0.0f){
-            mBGGDirection = 2.0f;
-            mBGG = 0.0f;
-        }
-
-        // Blue scale control
-        if(mBGB >= .99f && mBGBDirection > 0.0f){
-            mBGBDirection = -3.0f;
-            mBGB = 1.0f;
-        }
-        else if(mBGB <= .01f && mBGBDirection < 0.0f){
-            mBGBDirection = 3.0f;
-            mBGB = 0.0f;
-        }
-
-
-
-        GLES20.glClearColor(mBGR, mBGG, mBGB, 1.0f);
+        updateBackgroundColor();
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
         // Set the camera position (View matrix)
@@ -129,5 +92,42 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return shader;
     }
 
+    private void updateBackgroundColor(){
+        // Redraw background color
+        mBGR = mBGR + 0.01f*mBGRDirection;
+        mBGG = mBGG + 0.01f*mBGGDirection;
+        mBGB = mBGB + 0.01f*mBGBDirection;
+
+        // Red scale control
+        if(mBGR >= .99f && mBGRDirection > 0.0f){
+            mBGRDirection = -1.0f;
+            mBGR = 1.0f;
+        }
+        else if(mBGR <= .01f && mBGRDirection < 0.0f){
+            mBGRDirection = 1.0f;
+            mBGR = 0.0f;
+        }
+
+        // Green scale control
+        if(mBGG >= .99f && mBGGDirection > 0.0f){
+            mBGGDirection = -2.0f;
+            mBGG = 1.0f;
+        }
+        else if(mBGG <= .01f && mBGGDirection < 0.0f){
+            mBGGDirection = 2.0f;
+            mBGG = 0.0f;
+        }
+
+        // Blue scale control
+        if(mBGB >= .99f && mBGBDirection > 0.0f){
+            mBGBDirection = -3.0f;
+            mBGB = 1.0f;
+        }
+        else if(mBGB <= .01f && mBGBDirection < 0.0f){
+            mBGBDirection = 3.0f;
+            mBGB = 0.0f;
+        }
+        GLES20.glClearColor(mBGR, mBGG, mBGB, 1.0f);
+    }
 
 }
