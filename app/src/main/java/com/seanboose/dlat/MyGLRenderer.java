@@ -1,7 +1,6 @@
 package com.seanboose.dlat;
 
-import android.opengl.EGLConfig;
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.os.SystemClock;
@@ -36,7 +35,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         float[] scratch = new float[16];
 
         updateBackgroundColor();
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
@@ -67,15 +66,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, javax.microedition.khronos.egl.EGLConfig config) {
         // Set the background frame color
-//        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        GLES20.glClearColor(mBGR, mBGG, mBGB, 1.0f);
+//        GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        GLES30.glClearColor(mBGR, mBGG, mBGB, 1.0f);
 
         mTriangle = new Triangle();
     }
 
 
     public void onSurfaceChanged(GL10 unused, int width, int height) {
-        GLES20.glViewport(0, 0, width, height);
+        GLES30.glViewport(0, 0, width, height);
 
         float ratio = (float) width / height;
 
@@ -86,13 +85,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     public static int loadShader(int type, String shaderCode){
 
-        // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
-        // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
-        int shader = GLES20.glCreateShader(type);
+        // create a vertex shader type (GLES30.GL_VERTEX_SHADER)
+        // or a fragment shader type (GLES30.GL_FRAGMENT_SHADER)
+        int shader = GLES30.glCreateShader(type);
 
         // add the source code to the shader and compile it
-        GLES20.glShaderSource(shader, shaderCode);
-        GLES20.glCompileShader(shader);
+        GLES30.glShaderSource(shader, shaderCode);
+        GLES30.glCompileShader(shader);
 
         return shader;
     }
@@ -132,7 +131,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             mBGBDirection = 3.0f;
             mBGB = 0.0f;
         }
-        GLES20.glClearColor(mBGR, mBGG, mBGB, 1.0f);
+        GLES30.glClearColor(mBGR, mBGG, mBGB, 1.0f);
     }
 
 
