@@ -1,9 +1,13 @@
 package com.seanboose.dlat;
 
+import android.media.MediaRecorder;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.os.SystemClock;
+import android.util.Log;
+
+import java.io.IOException;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -13,30 +17,38 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
-    private Triangle mTriangle;
+    private Triangle mTriangleFront;
+    private Triangle mTriangleBack;
     private Square mSquare;
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
-    private float[] mTriangleRotationMatrix = new float[16];
+    private float[] mTriangleFrontRotationMatrix = new float[16];
+    private float[] mTriangleBackRotationMatrix = new float[16];
     private float[] mSquareRotationMatrix = new float[16];
+
+    private SoundMeter mSoundMeter;
 
     private float mBGR = 0.0f;
     private float mBGG = 0.0f;
     private float mBGB = 0.0f;
-    private float mBGRDirection = 1.0f;
-    private float mBGGDirection = 2.0f;
-    private float mBGBDirection = 3.0f;
 
-    public volatile float mTriangleAngle;
+    private float mTriR = 0.0f;
+    private float mTriG = 0.0f;
+    private float mTriB = 0.0f;
+    private float mTriRDirection = 1.0f;
+    private float mTriGDirection = 2.0f;
+    private float mTriBDirection = 3.0f;
 
-
+    public volatile float mTriangleFrontAngle;
 
     public void onDrawFrame(GL10 unused) {
 
-        float[] triangleScratch = new float[16];
+        float[] triangleFrontScratch = new float[16];
+        float[] triangleBackScratch = new float[16];
         float[] squareScratch = new float[16];
 
+        updateBackTriangleColor();
         updateBackgroundColor();
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
 
@@ -47,35 +59,53 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
         // Draw shape
-//        mTriangle.draw(mMVPMatrix);
+//        mTriangleFront.draw(mMVPMatrix);
 
 
         // Create a rotation transformation for the square
         long time = SystemClock.uptimeMillis() % 4000L;
         float angle = 0.090f * ((int) time);
         Matrix.setRotateM(mSquareRotationMatrix, 0, angle, 0, 0, -1.0f);
+        Matrix.setRotateM(mTriangleBackRotationMatrix, 0, -angle, 0, 0, -1.0f);
 
-        Matrix.setRotateM(mTriangleRotationMatrix, 0, mTriangleAngle, 0, 0, -1.0f);
+        Matrix.setRotateM(mTriangleFrontRotationMatrix, 0, mTriangleFrontAngle, 0, 0, -1.0f);
 
         // Combine the rotation matrix with the projection and camera view
         // Note that the mMVPMatrix factor *must be first* in order
         // for the matrix multiplication product to be correct.
-        Matrix.multiplyMM(triangleScratch, 0, mMVPMatrix, 0, mTriangleRotationMatrix, 0);
+        Matrix.multiplyMM(triangleFrontScratch, 0, mMVPMatrix, 0, mTriangleFrontRotationMatrix, 0);
+        Matrix.multiplyMM(triangleBackScratch, 0, mMVPMatrix, 0, mTriangleBackRotationMatrix, 0);
         Matrix.multiplyMM(squareScratch, 0, mMVPMatrix, 0, mSquareRotationMatrix, 0);
+
+        if(mSoundMeter.isOn()) {
+//            Log.v("soundmeter", "" + mSoundMeter.getAmplitudeEMA());
+            float scale = (float)mSoundMeter.getAmplitudeEMA();
+            float[] colors = {scale*1.0f, scale*1.0f, scale*1.0f, 1.0f};
+            mTriangleFront.updateColors(colors);
+        }
+
 
         // Draw shapes
         mSquare.draw(squareScratch);
-        mTriangle.draw(triangleScratch);
+        mTriangleBack.draw(triangleBackScratch);
+        mTriangleFront.draw(triangleFrontScratch);
     }
 
     @Override
     public void onSurfaceCreated(GL10 gl, javax.microedition.khronos.egl.EGLConfig config) {
         // Set the background frame color
-//        GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         GLES30.glClearColor(mBGR, mBGG, mBGB, 1.0f);
 
-        mTriangle = new Triangle();
+        mTriangleFront = new Triangle();
+        mTriangleBack = new Triangle();
+        float[] backColors = {1.0f, 1.0f, 1.0f, 0.5f};
+        mTriangleBack.updateColors(backColors);
         mSquare = new Square();
+
+        mSoundMeter = new SoundMeter();
+        try{mSoundMeter.start();}
+        catch(IOException e){e.printStackTrace();}
+
     }
 
 
@@ -106,52 +136,115 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mBGR = values[0];
         mBGG = values[1];
         mBGB = values[2];
+//        Log.v("Renderer", "updated bg color");
     }
 
-    private void updateBackgroundColor(){
+    public void updateBackgroundColor(){
+        GLES30.glClearColor(mBGR, mBGG, mBGB, 1.0f);
+    }
+
+    private void updateBackTriangleColor(){
         // Redraw background color
-        mBGR = mBGR + 0.01f*mBGRDirection;
-        mBGG = mBGG + 0.01f*mBGGDirection;
-        mBGB = mBGB + 0.01f*mBGBDirection;
+        mTriR = mTriR + 0.01f*mTriRDirection;
+        mTriG = mTriG + 0.01f*mTriGDirection;
+        mTriB = mTriB + 0.01f*mTriBDirection;
 
         // Red scale control
-        if(mBGR >= .99f && mBGRDirection > 0.0f){
-            mBGRDirection = -1.0f;
-            mBGR = 1.0f;
+        if(mTriR >= .99f && mTriRDirection > 0.0f){
+            mTriRDirection = -1.0f;
+            mTriR = 1.0f;
         }
-        else if(mBGR <= .01f && mBGRDirection < 0.0f){
-            mBGRDirection = 1.0f;
-            mBGR = 0.0f;
+        else if(mTriR <= .01f && mTriRDirection < 0.0f){
+            mTriRDirection = 1.0f;
+            mTriR = 0.0f;
         }
 
         // Green scale control
-        if(mBGG >= .99f && mBGGDirection > 0.0f){
-            mBGGDirection = -2.0f;
-            mBGG = 1.0f;
+        if(mTriG >= .99f && mTriGDirection > 0.0f){
+            mTriGDirection = -2.0f;
+            mTriG = 1.0f;
         }
-        else if(mBGG <= .01f && mBGGDirection < 0.0f){
-            mBGGDirection = 2.0f;
-            mBGG = 0.0f;
+        else if(mTriG <= .01f && mTriGDirection < 0.0f){
+            mTriGDirection = 2.0f;
+            mTriG = 0.0f;
         }
 
         // Blue scale control
-        if(mBGB >= .99f && mBGBDirection > 0.0f){
-            mBGBDirection = -3.0f;
-            mBGB = 1.0f;
+        if(mTriB >= .99f && mTriBDirection > 0.0f){
+            mTriBDirection = -3.0f;
+            mTriB = 1.0f;
         }
-        else if(mBGB <= .01f && mBGBDirection < 0.0f){
-            mBGBDirection = 3.0f;
-            mBGB = 0.0f;
+        else if(mTriB <= .01f && mTriBDirection < 0.0f){
+            mTriBDirection = 3.0f;
+            mTriB = 0.0f;
         }
-        GLES30.glClearColor(mBGR, mBGG, mBGB, 1.0f);
+        float[] colors = {mTriR, mTriG, mTriB, 1.0f};
+        mTriangleBack.updateColors(colors);
     }
 
 
     public float getTriangleAngle() {
-        return mTriangleAngle;
+        return mTriangleFrontAngle;
     }
 
     public void setTriangleAngle(float angle) {
-        mTriangleAngle = angle;
+        mTriangleFrontAngle = angle;
     }
+
+    public void onPause(){
+        mSoundMeter.stop();
+    }
+
+    public void onResume(){
+        if(mSoundMeter != null) {
+            try {
+                mSoundMeter.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public class SoundMeter {
+        static final private double EMA_FILTER = 0.1;
+
+        private MediaRecorder mRecorder = null;
+        private double mEMA = 0.0;
+
+        public void start() throws IOException {
+            if (mRecorder == null) {
+                mRecorder = new MediaRecorder();
+                mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                mRecorder.setOutputFile("/dev/null");
+                mRecorder.prepare();
+                mRecorder.start();
+                mEMA = 0.0;
+            }
+        }
+        public void stop() {
+            if (mRecorder != null) {
+                mRecorder.stop();
+                mRecorder.release();
+                mRecorder = null;
+            }
+        }
+        public double getAmplitude() {
+            if (mRecorder != null)
+                return  (mRecorder.getMaxAmplitude()/2700.0);
+            else
+                return 0;
+        }
+        public double getAmplitudeEMA() {
+            double amp = getAmplitude();
+            mEMA = EMA_FILTER * amp + (1.0 - EMA_FILTER) * mEMA;
+            return mEMA;
+        }
+
+        public boolean isOn(){
+            return mRecorder != null;
+        }
+    }
+
 }
