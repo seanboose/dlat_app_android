@@ -17,13 +17,15 @@ import android.view.MotionEvent;
  */
 public class OpenGLES20Activity extends Activity implements SensorEventListener{
 
-    private GLSurfaceView mGLView;
+    private MyGLSurfaceView mGLView;
     private float[] mRotationMatrix;
     private SensorManager mSensorManager;
     private Sensor mAccelerometer = null;
     private Sensor mMagnetometer = null;
     private float[] mAccelValues;
     private float[] mMagValues;
+
+    private float mMaxAccel;
 
 
     @Override
@@ -49,6 +51,7 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener{
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
             mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             Log.v("dlat", "found accelerometer");
+            mMaxAccel = mAccelerometer.getMaximumRange();
         }
 
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
@@ -62,6 +65,13 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener{
         Log.v("dlat", "sensor event");
         if(event.sensor == mAccelerometer){
             mAccelValues = event.values;
+            mAccelValues[0] = 5 * mAccelValues[0] / mMaxAccel;
+            mAccelValues[1] = 5 * mAccelValues[1] / mMaxAccel;
+            mAccelValues[2] = 5 * mAccelValues[2] / mMaxAccel;
+            mAccelValues[0] = Math.min(1.0f, mAccelValues[0]);
+            mAccelValues[1] = Math.min(1.0f, mAccelValues[1]);
+            mAccelValues[2] = Math.min(1.0f, mAccelValues[2]);
+            mGLView.mRenderer.updateBackgroundColor(mAccelValues);
             Log.v("dlat", "accelerometer event");
         }
         if(event.sensor == mMagnetometer){
@@ -94,27 +104,15 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener{
     }
 
 
-    class MyGLSurfaceView extends GLSurfaceView {//implements SensorEventListener {
+    class MyGLSurfaceView extends GLSurfaceView {
 
-        private final MyGLRenderer mRenderer;
+        public MyGLRenderer mRenderer;
 
         public MyGLSurfaceView(Context context){
             super(context);
 
             // Create an OpenGL ES 2.0 context
             setEGLContextClientVersion(2);
-
-            mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-            mAccelValues = new float[3];
-            mMagValues = new float[3];
-            if (mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null) {
-                mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-                Log.v("dlat", "found magnetometer");
-            }
-            if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
-                mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-                Log.v("dlat", "found accelerometer");
-            }
 
             mRenderer = new MyGLRenderer();
             setRenderer(mRenderer);
@@ -149,8 +147,8 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener{
                         dy = dy * -1 ;
                     }
 
-                    mRenderer.setAngle(
-                            mRenderer.getAngle() +
+                    mRenderer.setTriangleAngle(
+                            mRenderer.getTriangleAngle() +
                                     ((dx + dy) * TOUCH_SCALE_FACTOR));
                     requestRender();
             }

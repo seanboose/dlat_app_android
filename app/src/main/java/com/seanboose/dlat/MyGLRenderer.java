@@ -14,10 +14,12 @@ import javax.microedition.khronos.opengles.GL10;
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private Triangle mTriangle;
+    private Square mSquare;
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
-    private float[] mRotationMatrix = new float[16];
+    private float[] mTriangleRotationMatrix = new float[16];
+    private float[] mSquareRotationMatrix = new float[16];
 
     private float mBGR = 0.0f;
     private float mBGG = 0.0f;
@@ -26,13 +28,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float mBGGDirection = 2.0f;
     private float mBGBDirection = 3.0f;
 
-    public volatile float mAngle;
+    public volatile float mTriangleAngle;
 
 
 
     public void onDrawFrame(GL10 unused) {
 
-        float[] scratch = new float[16];
+        float[] triangleScratch = new float[16];
+        float[] squareScratch = new float[16];
 
         updateBackgroundColor();
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
@@ -47,20 +50,22 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 //        mTriangle.draw(mMVPMatrix);
 
 
-        // Create a rotation transformation for the triangle
-//        long time = SystemClock.uptimeMillis() % 4000L;
-//        float angle = 0.090f * ((int) time);
-//        Matrix.setRotateM(mRotationMatrix, 0, angle, 0, 0, -1.0f);
+        // Create a rotation transformation for the square
+        long time = SystemClock.uptimeMillis() % 4000L;
+        float angle = 0.090f * ((int) time);
+        Matrix.setRotateM(mSquareRotationMatrix, 0, angle, 0, 0, -1.0f);
 
-        Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, -1.0f);
+        Matrix.setRotateM(mTriangleRotationMatrix, 0, mTriangleAngle, 0, 0, -1.0f);
 
         // Combine the rotation matrix with the projection and camera view
         // Note that the mMVPMatrix factor *must be first* in order
         // for the matrix multiplication product to be correct.
-        Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+        Matrix.multiplyMM(triangleScratch, 0, mMVPMatrix, 0, mTriangleRotationMatrix, 0);
+        Matrix.multiplyMM(squareScratch, 0, mMVPMatrix, 0, mSquareRotationMatrix, 0);
 
-        // Draw triangle
-        mTriangle.draw(scratch);
+        // Draw shapes
+        mSquare.draw(squareScratch);
+        mTriangle.draw(triangleScratch);
     }
 
     @Override
@@ -70,6 +75,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES30.glClearColor(mBGR, mBGG, mBGB, 1.0f);
 
         mTriangle = new Triangle();
+        mSquare = new Square();
     }
 
 
@@ -94,6 +100,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES30.glCompileShader(shader);
 
         return shader;
+    }
+
+    public void updateBackgroundColor(float[] values){
+        mBGR = values[0];
+        mBGG = values[1];
+        mBGB = values[2];
     }
 
     private void updateBackgroundColor(){
@@ -135,11 +147,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
 
-    public float getAngle() {
-        return mAngle;
+    public float getTriangleAngle() {
+        return mTriangleAngle;
     }
 
-    public void setAngle(float angle) {
-        mAngle = angle;
+    public void setTriangleAngle(float angle) {
+        mTriangleAngle = angle;
     }
 }
