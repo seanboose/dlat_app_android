@@ -41,6 +41,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float mTriGDirection = 2.0f;
     private float mTriBDirection = 3.0f;
 
+    private boolean paused = false;
+
     public volatile float mTriangleFrontAngle;
 
     public void onDrawFrame(GL10 unused) {
@@ -79,8 +81,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(triangleBackScratch, 0, mMVPMatrix, 0, mTriangleBackRotationMatrix, 0);
         Matrix.multiplyMM(squareScratch, 0, mMVPMatrix, 0, mSquareRotationMatrix, 0);
 
-        if(mSoundMeter.isOn()) {
-//            Log.v("soundmeter", "" + mSoundMeter.getAmplitudeEMA());
+        if(!paused && mSoundMeter.isOn()) {
             float scale = (float)mSoundMeter.getAmplitudeEMA();
             float[] colors = {scale*1.0f, scale*1.0f, scale*1.0f, 1.0f};
             mTriangleFront.updateColors(colors);
@@ -141,7 +142,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mBGR = values[0];
         mBGG = values[1];
         mBGB = values[2];
-//        Log.v("Renderer", "updated bg color");
     }
 
     public void updateBackgroundColor(){
@@ -201,6 +201,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     public void onPause(){
         Log.v("MyGLRenderer", "onPause");
+        paused = true;
         if(mSoundMeter != null) {
             mSoundMeter.stop();
         }
@@ -208,6 +209,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     public void onResume(){
         Log.v("MyGLRenderer", "onResume");
+        paused = false;
         if(mSoundMeter != null) {
             try {
                 mSoundMeter.start();

@@ -2,18 +2,14 @@ package com.seanboose.dlat;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.media.MediaRecorder;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
-
-import java.io.IOException;
 
 
 /**
@@ -104,7 +100,7 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener{
         mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mLightMeter, SensorManager.SENSOR_DELAY_NORMAL);
 
-//        mGLView.mRenderer.onResume();
+        mGLView.mRenderer.onResume();
     }
 
     @Override
@@ -114,14 +110,6 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener{
         mSensorManager.unregisterListener(this);
         mGLView.mRenderer.onPause();
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        mGLView.mRenderer.onPause();
-//        super.onBackPressed();
-//        finish();
-//    }
-
 
     class MyGLSurfaceView extends GLSurfaceView {
 
