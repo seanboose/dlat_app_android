@@ -26,6 +26,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float[] mTriangleFrontRotationMatrix = new float[16];
     private float[] mTriangleBackRotationMatrix = new float[16];
     private float[] mSquareRotationMatrix = new float[16];
+    private float[] mSquareColors = new float[4];
 
     private SoundMeter mSoundMeter;
 
@@ -50,6 +51,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         updateBackTriangleColor();
         updateBackgroundColor();
+        mSquare.updateColors(mSquareColors);
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
 
         // Set the camera position (View matrix)
@@ -93,6 +95,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, javax.microedition.khronos.egl.EGLConfig config) {
+        Log.v("MyGLRenderer", "onSurfaceCreated");
         // Set the background frame color
         GLES30.glClearColor(mBGR, mBGG, mBGB, 1.0f);
 
@@ -110,6 +113,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
     public void onSurfaceChanged(GL10 unused, int width, int height) {
+        Log.v("MyGLRenderer", "onSurfaceChanged");
         GLES30.glViewport(0, 0, width, height);
 
         float ratio = (float) width / height;
@@ -118,6 +122,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // in the onDrawFrame() method
         Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
     }
+
 
     public static int loadShader(int type, String shaderCode){
 
@@ -182,6 +187,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mTriangleBack.updateColors(colors);
     }
 
+    public void updateSquareColor(float[] colors){
+        mSquareColors = colors;
+    }
 
     public float getTriangleAngle() {
         return mTriangleFrontAngle;
@@ -192,10 +200,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void onPause(){
-        mSoundMeter.stop();
+        Log.v("MyGLRenderer", "onPause");
+        if(mSoundMeter != null) {
+            mSoundMeter.stop();
+        }
     }
 
     public void onResume(){
+        Log.v("MyGLRenderer", "onResume");
         if(mSoundMeter != null) {
             try {
                 mSoundMeter.start();
@@ -206,12 +218,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     public class SoundMeter {
-        static final private double EMA_FILTER = 0.1;
+        static final private double EMA_FILTER = 0.2;
 
         private MediaRecorder mRecorder = null;
         private double mEMA = 0.0;
 
         public void start() throws IOException {
+            Log.v("SoundMeter", "start()");
             if (mRecorder == null) {
                 mRecorder = new MediaRecorder();
                 mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -222,13 +235,23 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 mRecorder.start();
                 mEMA = 0.0;
             }
+            else {
+                Log.v("SoundMeter", "called start without mRecorder!=null");
+            }
         }
         public void stop() {
+            Log.v("SoundMeter", "stop()");
             if (mRecorder != null) {
                 mRecorder.stop();
+                mRecorder.reset();
                 mRecorder.release();
                 mRecorder = null;
             }
+            else{
+                Log.v("SoundMeter", "called stop with mRecorder == null");
+            }
+
+            Log.v("SoundMeter", "Leaving stop()");
         }
         public double getAmplitude() {
             if (mRecorder != null)

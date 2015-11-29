@@ -2,6 +2,7 @@ package com.seanboose.dlat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -51,15 +52,12 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener{
 
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null) {
             mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-//            Log.v("dlat", "found magnetometer");
         }
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
             mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-//            Log.v("dlat", "found accelerometer");
         }
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT) != null) {
             mLightMeter = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-//            Log.v("dlat", "found accelerometer");
         }
 
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
@@ -69,10 +67,8 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener{
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-//        Log.v("dlat", "sensor event");
         if(event.sensor == mAccelerometer){
             mAccelValues = event.values;
-//            Log.v("dlat", "accelerometer event, [0]=" + mAccelValues[0] + ", mMaxAccel:" + mMaxAccel);
             mAccelValues[0] = 5 * mAccelValues[0] / mMaxAccel;
             mAccelValues[1] = 5 * mAccelValues[1] / mMaxAccel;
             mAccelValues[2] = 5 * mAccelValues[2] / mMaxAccel;
@@ -86,7 +82,9 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener{
         }
         if(event.sensor == mLightMeter){
             Log.v("light:", "" + event.values[0]);
-            mLightValue = event.values[0];
+            mLightValue = event.values[0] / 1000.0f;
+            float[] squareColors =  {mLightValue, mLightValue, mLightValue, 1.0f};
+            mGLView.mRenderer.updateSquareColor(squareColors);
         }
 
         if(mAccelerometer != null && mMagnetometer != null) {
@@ -106,7 +104,7 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener{
         mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mLightMeter, SensorManager.SENSOR_DELAY_NORMAL);
 
-        mGLView.mRenderer.onResume();
+//        mGLView.mRenderer.onResume();
     }
 
     @Override
@@ -116,6 +114,13 @@ public class OpenGLES20Activity extends Activity implements SensorEventListener{
         mSensorManager.unregisterListener(this);
         mGLView.mRenderer.onPause();
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        mGLView.mRenderer.onPause();
+//        super.onBackPressed();
+//        finish();
+//    }
 
 
     class MyGLSurfaceView extends GLSurfaceView {

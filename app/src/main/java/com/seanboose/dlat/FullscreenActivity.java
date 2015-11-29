@@ -62,9 +62,9 @@ public class FullscreenActivity extends Activity {
 
                 Intent getOpenGLIntent = new Intent(getApplicationContext(), OpenGLES20Activity.class);
                 //getGameScreenIntent.putExtra("name", name);
-                final int result = 1;
-                startActivityForResult(getOpenGLIntent, result);
-
+//                final int result = 1;
+//                startActivityForResult(getOpenGLIntent, result);
+                startActivity(getOpenGLIntent);
             }
         });
 

@@ -40,7 +40,8 @@ public class Square {
             1.5f,  1.5f, 0.0f }; // top right
 
     private short drawOrder[] = { 0, 1, 2, 0, 2, 3 }; // order to draw vertices
-    float color[] = { 0.4f, 0.2f, 0.8f, 0.5f };
+//    float color[] = { 0.4f, 0.2f, 0.8f, 0.5f };
+    float color[] = { 0.0f, 0.0f, 0.0f, 1.0f};
 
     public Square() {
         // initialize vertex byte buffer for shape coordinates
@@ -151,5 +152,12 @@ public class Square {
 
         // Disable vertex array
         GLES20.glDisableVertexAttribArray(mPositionHandle);
+    }
+
+    public void updateColors(float[] new_color){
+        if(new_color[0] >= 0.0f && new_color[0] <= 1.0f) color[0] = new_color[0];
+        if(new_color[1] >= 0.0f && new_color[1] <= 1.0f) color[1] = new_color[1];
+        if(new_color[2] >= 0.0f && new_color[2] <= 1.0f) color[2] = new_color[2];
+        if(new_color[3] >= 0.0f && new_color[3] <= 1.0f) color[3] = new_color[3];
     }
 }
