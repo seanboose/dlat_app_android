@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -49,11 +50,12 @@ public class FullscreenActivity extends Activity {
 
         setContentView(R.layout.activity_fullscreen);
         final View contentView = findViewById(R.id.fullscreen_content);
-        contentView.setOnClickListener(new View.OnClickListener() {
+
+        Button interactive = (Button) findViewById(R.id.interactiveButton);
+        interactive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.v("FullscreenActivity", "Starting OpenGL activity");
-
                 Intent getOpenGLIntent = new Intent(getApplicationContext(), OpenGLES20Activity.class);
                 startActivity(getOpenGLIntent);
             }
