@@ -2,6 +2,7 @@ package com.seanboose.dlat;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +41,7 @@ public class AnimationActivity extends Activity {
         if(_color == _white) background = _black;
         _mainView.setBackgroundColor(background);
 
-        Animator animator = _squares.exposeAnimator();
+        AnimatorSet animator = _squares.exposeAnimatorSet();
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {

@@ -1,6 +1,7 @@
 package com.seanboose.dlat;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -22,9 +23,8 @@ public class MovingSquaresView extends View {
     private final Path _path = new Path();
     private final LinearInterpolator _interpolator = new LinearInterpolator();
 
-    private float _size = 0;
-//    private float _height = 0;
-//    private float _width = 0;
+    private float _height = 0;
+    private float _width = 0;
 
     public MovingSquaresView(Context context) {
         super(context);
@@ -50,31 +50,25 @@ public class MovingSquaresView extends View {
         _brush.setColor(color);
     }
 
-    public void setSize(float size){
-        _size = size;
+    public void setHeight(float height){
+        _height = height;
         invalidate();
     }
 
-//    public void setHeight(float height){
-//        _height = height;
-//        invalidate();
-//    }
-//
-//    public void setWidth(float width){
-//        _width = width;
-//        invalidate();
-//    }
+    public void setWidth(float width){
+        _width = width;
+        invalidate();
+    }
 
     public void reset(int color){
         Log.v("MovingSquares", "reset()");
         _brush.setColor(color);
-        _size = 0;
+        _width = 0;
+        _height = 0;
     }
 
     public Animator exposeAnimator(){
 
-//        float width = getWidth();
-//        float height = getHeight();
         float finalSize = (float) Math.max(getHeight(), getWidth());
 
         ObjectAnimator animator = ObjectAnimator.ofFloat(this, "size", 0, finalSize);
@@ -83,12 +77,29 @@ public class MovingSquaresView extends View {
         return animator;
     }
 
+    public AnimatorSet exposeAnimatorSet(){
+        float finalWidth = getWidth();
+        float finalHeight = getHeight();
+
+        ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(this, "height", 0, finalHeight);
+        ObjectAnimator widthAnimator = ObjectAnimator.ofFloat(this, "width", 0, finalWidth);
+        heightAnimator.setDuration(ANIMATION_DURATION);
+        widthAnimator.setDuration(ANIMATION_DURATION);
+        heightAnimator.setInterpolator(_interpolator);
+        widthAnimator.setInterpolator(_interpolator);
+
+        AnimatorSet fullAnimator = new AnimatorSet();
+        fullAnimator.playTogether(heightAnimator, widthAnimator);
+
+        return fullAnimator;
+    }
+
     @Override
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
 
         _path.reset();
-        _path.addRect(0, 0, _size, _size, Path.Direction.CCW);
+        _path.addRect(0, 0, _width, _height, Path.Direction.CCW);
         canvas.drawPath(_path, _brush);
     }
 
