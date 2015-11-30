@@ -99,7 +99,12 @@ public class MovingSquaresView extends View {
         super.onDraw(canvas);
 
         _path.reset();
-        _path.addRect(0, 0, _width, _height, Path.Direction.CCW);
+
+        _path.moveTo(0, 0);
+        _path.lineTo(0, _height);
+        _path.lineTo(_width, _height);
+        _path.lineTo(0, 0);
+
         canvas.drawPath(_path, _brush);
     }
 
