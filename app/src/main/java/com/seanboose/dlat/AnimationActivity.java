@@ -13,7 +13,7 @@ import android.view.View;
 public class AnimationActivity extends Activity {
 
 
-    private MovingSquaresView _squares;
+    private MultiSquaresView _squares;
     private View _mainView;
     private Handler _timer;
 
@@ -28,7 +28,7 @@ public class AnimationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
 
-        _squares = (MovingSquaresView) findViewById(R.id.squaresView);
+        _squares = (MultiSquaresView) findViewById(R.id.squaresView);
         _squares.reset(_color);
         _timer = new Handler();
 
@@ -38,6 +38,7 @@ public class AnimationActivity extends Activity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus){
         if(hasFocus) {
+            _squares.updateDimensions();
             startAnimation();
         }
     }
@@ -45,7 +46,7 @@ public class AnimationActivity extends Activity {
     private void startAnimation(){
         int background = _white;
         if(_color == _white) background = _black;
-        _mainView.setBackgroundColor(background);
+//        _mainView.setBackgroundColor(background);
 
         AnimatorSet animator = _squares.exposeAnimatorSet();
 
@@ -64,31 +65,11 @@ public class AnimationActivity extends Activity {
 
         animator.start();
 
-//        _timer.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.v("AnimationActivity", "_timer.run()");
-//                startAnimation();
-//            }
-//        }, 500);
-
-//        Log.v("AnimationActivity", "Animation started");
     }
 
     private void getNextColor(){
         if (_color == _black) _color = _white;
         else _color = _black;
-    }
-
-    public class squareRepeater implements Runnable {
-        @Override
-        public void run() {
-            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-
-            startAnimation();
-
-
-        }
     }
 
     @Override
