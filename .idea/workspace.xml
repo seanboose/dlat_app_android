@@ -32,9 +32,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f9a9257-8807-4bb4-98ab-d49b63588ca8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/MultiSquaresView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/AnimationActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/AnimationActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_animation.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_animation.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/MultiSquaresView.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/MultiSquaresView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DLAT.iws" />
@@ -106,24 +105,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AnimationActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AnimationActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/AnimationActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.5546219">
+              <caret line="47" column="29" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="29" />
               <folding>
-                <element signature="e#1463#1789#0" expanded="true" />
-                <element signature="e#1788#1789#0" expanded="true" />
+                <element signature="e#1326#1654#0" expanded="true" />
+                <element signature="e#1653#1654#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MultiSquaresView.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MultiSquaresView.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/MultiSquaresView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33978873">
-              <caret line="135" column="43" selection-start-line="135" selection-start-column="43" selection-end-line="135" selection-end-column="43" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1496,8 +1495,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/FullscreenActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_animation.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/MovingSquaresView.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/AnimationActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/MultiSquaresView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/AnimationActivity.java" />
       </list>
     </option>
   </component>
@@ -2342,23 +2341,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/AnimationActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/MultiSquaresView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+          <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
           <folding>
-            <element signature="e#1463#1789#0" expanded="true" />
-            <element signature="e#1788#1789#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/MultiSquaresView.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/seanboose/dlat/AnimationActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33978873">
-          <caret line="135" column="43" selection-start-line="135" selection-start-column="43" selection-end-line="135" selection-end-column="43" />
+        <state vertical-scroll-proportion="0.5546219">
+          <caret line="47" column="29" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="29" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#1326#1654#0" expanded="true" />
+            <element signature="e#1653#1654#0" expanded="true" />
           </folding>
         </state>
       </provider>

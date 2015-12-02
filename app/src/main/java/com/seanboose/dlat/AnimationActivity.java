@@ -29,7 +29,6 @@ public class AnimationActivity extends Activity {
         setContentView(R.layout.activity_animation);
 
         _squares = (MultiSquaresView) findViewById(R.id.squaresView);
-        _squares.reset(_color);
         _timer = new Handler();
 
         _mainView = findViewById(R.id.animationMain);
@@ -44,11 +43,9 @@ public class AnimationActivity extends Activity {
     }
 
     private void startAnimation(){
-        int background = _white;
-        if(_color == _white) background = _black;
-//        _mainView.setBackgroundColor(background);
 
         AnimatorSet animator = _squares.exposeAnimatorSet();
+        _squares.setColor(0);
 
         if(_active) {
             animator.addListener(new AnimatorListenerAdapter() {
@@ -56,7 +53,7 @@ public class AnimationActivity extends Activity {
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
                     getNextColor();
-                    _squares.reset(_color);
+//                    _squares.reset(_color);
                     startAnimation();
 
                 }
