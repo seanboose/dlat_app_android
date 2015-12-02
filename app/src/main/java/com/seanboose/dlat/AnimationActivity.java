@@ -21,8 +21,7 @@ public class AnimationActivity extends Activity {
     private int _white = Color.WHITE;
     private int _color = _white;
 
-    private boolean _filled = false;
-    private boolean _first = true;
+    private boolean _active = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class AnimationActivity extends Activity {
 
         AnimatorSet animator = _squares.exposeAnimatorSet();
 
-        if(_first) {
+        if(_active) {
             animator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -61,8 +60,6 @@ public class AnimationActivity extends Activity {
 
                 }
             });
-
-//            _first = false;
         }
 
         animator.start();
@@ -92,5 +89,19 @@ public class AnimationActivity extends Activity {
 
 
         }
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        _active = false;
+        Log.v("AnimationActivity", "onPause");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        _active = true;
+        Log.v("AnimationActivity", "onResume");
     }
 }
