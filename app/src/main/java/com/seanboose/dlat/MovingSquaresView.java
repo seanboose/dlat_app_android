@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
+import java.util.ArrayList;
+
 /**
  * Created by Sean Boose on 11/30/15.
  */
@@ -98,6 +100,9 @@ public class MovingSquaresView extends View {
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
 
+        float maxWidth = getWidth();
+        float maxHeight = getHeight();
+
         _path.reset();
 
         _path.moveTo(0, 0);
@@ -105,7 +110,13 @@ public class MovingSquaresView extends View {
         _path.lineTo(_width, _height);
         _path.lineTo(0, 0);
 
+        _path.moveTo(maxWidth, maxHeight);
+        _path.lineTo(maxWidth, maxHeight - _height);
+        _path.lineTo(maxWidth - _width, maxHeight - _height);
+        _path.lineTo(maxWidth, maxHeight);
+
         canvas.drawPath(_path, _brush);
+
     }
 
 }
