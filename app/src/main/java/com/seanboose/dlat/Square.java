@@ -10,6 +10,8 @@ import java.nio.ShortBuffer;
 /**
  * Created by Sean Boose on 11/19/15.
  */
+// Lots of code in this was taken from Android's Displaying Graphics with OpenGL ES tutorial
+// http://developer.android.com/training/graphics/opengl/index.html
 public class Square {
 
     private FloatBuffer vertexBuffer;

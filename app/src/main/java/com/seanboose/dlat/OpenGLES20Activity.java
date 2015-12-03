@@ -15,6 +15,9 @@ import android.view.MotionEvent;
 /**
  * Created by Sean Boose on 11/6/15.
  */
+
+// Lots of code in this was taken from Android's Displaying Graphics with OpenGL ES tutorial
+// http://developer.android.com/training/graphics/opengl/index.html
 public class OpenGLES20Activity extends Activity implements SensorEventListener{
 
     private MyGLSurfaceView mGLView;

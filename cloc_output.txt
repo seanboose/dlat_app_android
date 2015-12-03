@@ -1,0 +1,40 @@
+      20 text files.
+classified 20 files      20 unique files.                              
+       0 files ignored.
+
+http://cloc.sourceforge.net v 1.62  T=0.11 s (188.5 files/s, 14945.4 lines/s)
+------------------------------------------------------------------------------------------------------------------------
+File                                                                                 blank        comment           code
+------------------------------------------------------------------------------------------------------------------------
+app/src/main/java/com/seanboose/dlat/MyGLRenderer.java                                  52             20            199
+app/src/main/java/com/seanboose/dlat/OpenGLES20Activity.java                            33             11            125
+app/src/main/java/com/seanboose/dlat/MultiSquaresView.java                              32              6            117
+app/src/main/java/com/seanboose/dlat/Square.java                                        38             33             92
+app/src/main/java/com/seanboose/dlat/Triangle.java                                      40             41             83
+app/src/main/java/com/seanboose/dlat/util/SystemUiHiderHoneycomb.java                   17             52             72
+app/src/main/java/com/seanboose/dlat/AnimationActivity.java                             19              1             65
+app/src/main/java/com/seanboose/dlat/util/SystemUiHider.java                            19            103             50
+app/src/main/java/com/seanboose/dlat/util/SystemUiHiderBase.java                         7             12             44
+app/src/main/java/com/seanboose/dlat/FullscreenActivity.java                             7              6             33
+app/src/main/AndroidManifest.xml                                                         5              0             29
+app/src/main/res/layout/activity_fullscreen.xml                                          5              0             27
+app/src/main/res/values/styles.xml                                                       5              4             18
+app/src/main/res/layout/activity_animation.xml                                           1              0             14
+app/src/main/res/values-v11/styles.xml                                                   3              0             12
+app/src/main/res/values/attrs.xml                                                        2              4              6
+app/src/main/res/values/strings.xml                                                      1              0              5
+app/src/main/res/values/dimens.xml                                                       0              1              4
+app/src/main/res/values-w820dp/dimens.xml                                                0              3              3
+app/src/main/res/values/colors.xml                                                       2              0              3
+------------------------------------------------------------------------------------------------------------------------
+SUM:                                                                                   288            297           1001
+------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Java                            10            264            285            880
+XML                             10             24             12            121
+-------------------------------------------------------------------------------
+SUM:                            20            288            297           1001
+-------------------------------------------------------------------------------

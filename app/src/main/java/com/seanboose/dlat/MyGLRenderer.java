@@ -15,6 +15,8 @@ import javax.microedition.khronos.opengles.GL10;
 /**
  * Created by Sean Boose on 11/6/15.
  */
+// Lots of code in this was taken from Android's Displaying Graphics with OpenGL ES tutorial
+// http://developer.android.com/training/graphics/opengl/index.html
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private Triangle mTriangleFront;
@@ -61,10 +63,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-
-        // Draw shape
-//        mTriangleFront.draw(mMVPMatrix);
-
 
         // Create a rotation transformation for the square
         long time = SystemClock.uptimeMillis() % 4000L;
