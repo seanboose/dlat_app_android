@@ -12,4 +12,20 @@
         android:id="@+id/squaresView"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/increaseButton"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="onIncreaseClick" />
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/decreaseButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="onDecreaseClick" />
 </RelativeLayout>

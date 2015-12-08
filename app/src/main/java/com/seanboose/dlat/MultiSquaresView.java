@@ -196,4 +196,21 @@ public class MultiSquaresView extends View {
         return Color.BLACK;
     }
 
+    public boolean increase() {
+        if(_numSquares <= 15) {
+            ++_numSquares;
+            updateDimensions();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean decrease() {
+        if(_numSquares >= 5) {
+            --_numSquares;
+            updateDimensions();
+            return true;
+        }
+        return false;
+    }
 }
