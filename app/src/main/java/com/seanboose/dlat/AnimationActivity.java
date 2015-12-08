@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class AnimationActivity extends Activity {
 
@@ -39,6 +40,7 @@ public class AnimationActivity extends Activity {
 
         increaseButton.setBackgroundColor(Color.TRANSPARENT);
         decreaseButton.setBackgroundColor(Color.TRANSPARENT);
+
     }
 
     @Override
@@ -92,13 +94,16 @@ public class AnimationActivity extends Activity {
 
     public void onIncreaseClick(View view) {
         if(!_squares.increase()){
-            // snackbar
+            Toast
+                    .makeText(this, "Cannot increase squares further.", Toast.LENGTH_SHORT)
+                    .show();
         }
     }
     public void onDecreaseClick(View view) {
         if(! _squares.decrease()) {
-            //snackbar
-//            Snackbar snackbar = Snackbar.make(this, "Cannot decrease squares further.", Snackbar.LENGTH_SHORT);
+            Toast
+                    .makeText(this, "Cannot decrease squares further.", Toast.LENGTH_SHORT)
+                    .show();
         };
     }
 }
