@@ -102,10 +102,56 @@ public class MultiSquaresView extends View {
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
 
-
         _pathOne.reset();
         _pathTwo.reset();
 
+        drawBottom();
+        drawTop();
+
+        canvas.drawPath(_pathOne, _brushOne);
+        canvas.drawPath(_pathTwo, _brushTwo);
+    }
+
+    private void drawTop(){
+
+        float right;
+        float middle;
+        float left;
+        float top = 0;
+        float botLeft;
+        float botMiddle;
+        float botRight;
+
+        float remWidth;
+        float remHeight;
+
+        for(int i=-1; i<=_numSquares; i+=2){
+            remWidth = _stepWidth - _width;
+            remHeight = _stepHeight - _height;
+
+            left = i * _stepWidth - _width;
+            middle = i * _stepWidth + remWidth;
+            right = (i+2) * _stepWidth - _width;
+
+            botLeft =i * _stepHeight - _height;
+            botMiddle = i * _stepHeight + remHeight;
+            botRight = (i+2) * _stepHeight - _height;
+
+            _pathOne.moveTo(left, top);
+            _pathOne.lineTo(left, botLeft);
+            _pathOne.lineTo(middle, botMiddle);
+            _pathOne.lineTo(middle, top);
+            _pathOne.lineTo(left, top);
+
+            _pathTwo.moveTo(middle, top);
+            _pathTwo.lineTo(middle, botMiddle);
+            _pathTwo.lineTo(right, botRight);
+            _pathTwo.lineTo(right, top);
+            _pathTwo.lineTo(middle, top);
+        }
+    }
+
+    private void drawBottom(){
         float left;
         float middle;
         float right;
@@ -141,8 +187,6 @@ public class MultiSquaresView extends View {
             _pathTwo.lineTo(right, topRight);
             _pathTwo.lineTo(middle, topMiddle);
         }
-        canvas.drawPath(_pathOne, _brushOne);
-        canvas.drawPath(_pathTwo, _brushTwo);
     }
 
     private int getSecondColor(int color){
